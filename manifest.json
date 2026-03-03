@@ -1,7 +1,7 @@
 {
   "name": "Ramadan Pro Tracker",
   "short_name": "Ramadan Tracker",
-  "start_url": "index.html",
+  "start_url": "/ramadan-tracker/",,
   "display": "standalone",
   "background_color": "#0f0c29",
   "theme_color": "#24243e",
