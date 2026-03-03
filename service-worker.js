@@ -1,8 +1,11 @@
-const CACHE_NAME = "ramadan-tracker-v1";
+const CACHE_NAME = "ramadan-tracker-v2";
 
 const urlsToCache = [
-  "index.html",
-  "manifest.json"
+  "/ramadan-tracker/",
+  "/ramadan-tracker/index.html",
+  "/ramadan-tracker/manifest.json",
+  "/ramadan-tracker/icon-192.png",
+  "/ramadan-tracker/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -14,7 +17,6 @@ self.addEventListener("install", event => {
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
