@@ -72,14 +72,7 @@ navigator.geolocation.getCurrentPosition(position => {
     fetchRamadanTimes();
 });
 
-async function fetchRamadanTimes() {
-    const year = new Date().getFullYear();
-    const response = await fetch(
-        `https://api.aladhan.com/v1/calendar?latitude=${latitude}&longitude=${longitude}&method=1&month=3&year=${year}`
-    );
-    const data = await response.json();
-    displayRamadan(data.data);
-}
+
 
 function displayRamadan(days) {
     const container = document.getElementById("ramadanContainer");
@@ -102,7 +95,33 @@ function displayRamadan(days) {
             card.innerHTML = `
                 <h3>Roza ${ramadanCount}</h3>
                 <p>${day.date.gregorian.day} ${day.date.gregorian.month.en} ${day.date.gregorian.year}</p>
-                <p><b>Sehri:</b> ${day.timings.Fajr}</p>
+                <p><b>Sehri:</b> ${day.timings.Fajr 
+async function fetchRamadanTimes() {
+    try {
+        const year = new Date().getFullYear();
+
+        const response = await fetch(
+            `https://api.aladhan.com/v1/calendar?latitude=${latitude}&longitude=${longitude}&method=1&month=3&year=${year}`
+        );
+
+        if (!response.ok) {
+            throw new Error("API error");
+        }
+
+        const data = await response.json();
+
+        if (!data.data) {
+            throw new Error("No data received");
+        }
+
+        displayRamadan(data.data);
+
+    } catch (error) {
+        document.getElementById("ramadanContainer").innerHTML =
+            "<h2 style='color:red;'>Unable to load Ramadan timings. Please refresh.</h2>";
+        console.error(error);
+    }
+                 }}</p>
                 <p><b>Iftar:</b> ${day.timings.Maghrib}</p>
                 <button onclick="markRoza(${ramadanCount})">Mark Completed</button>
             `;
